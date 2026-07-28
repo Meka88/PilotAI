@@ -43,6 +43,7 @@ jobs:
           NODE_ENV: production
           CI: false
           METICULOUS_BUILD: "true"
+          VITE_METICULOUS_RECORDING_TOKEN: ${{ secrets.METICULOUS_API_TOKEN }}
 
       - name: Skip notice when token is missing
         if: ${{ env.METICULOUS_API_TOKEN == '' }}
