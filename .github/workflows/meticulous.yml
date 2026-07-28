@@ -1,0 +1,58 @@
+name: Meticulous
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+permissions:
+  actions: write
+  contents: read
+  statuses: write
+
+jobs:
+  test:
+    name: Meticulous
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      METICULOUS_API_TOKEN: ${{ secrets.METICULOUS_API_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+        env:
+          NODE_ENV: production
+          CI: false
+
+      - name: Skip notice when token is missing
+        if: ${{ env.METICULOUS_API_TOKEN == '' }}
+        run: |
+          echo "::notice::METICULOUS_API_TOKEN is not configured."
+          echo "Build succeeded. Add the METICULOUS_API_TOKEN repository secret"
+          echo "and install the Meticulous GitHub App to enable visual tests."
+          echo "See README.md → Meticulous setup."
+
+      - name: Upload assets and run Meticulous tests
+        if: ${{ env.METICULOUS_API_TOKEN != '' }}
+        uses: alwaysmeticulous/report-diffs-action/upload-assets@v1
+        with:
+          api-token: ${{ env.METICULOUS_API_TOKEN }}
+          app-directory: dist
+          rewrites: |
+            [
+              { "source": "/(.*)", "destination": "/index.html" }
+            ]
