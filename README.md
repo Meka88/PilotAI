@@ -91,6 +91,8 @@ Replace `YOUR_PROJECT_ID` with the ID from your [Meticulous dashboard](https://a
 
 Until that secret exists, the workflow still **builds the app and passes** — it skips the upload step with a notice instead of failing.
 
+If you just added `METICULOUS_API_TOKEN`, re-run the **Meticulous** workflow (or push a commit) so CI picks up the secret and runs the upload step.
+
 ### 3. CI workflow
 
 `.github/workflows/meticulous.yml` builds the Vite app and uploads `dist/` via:
