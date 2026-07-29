@@ -10,17 +10,18 @@ export function DatasetDetailPage() {
   const { datasetId } = useParams();
   const { state, currentUser, hasDatasetAccess, requestAccess } = useApp();
   const [reason, setReason] = useState(
-    "Need this dataset to complete an active exploration playbook.",
+    "Need this asset to complete an active exploration playbook.",
   );
   const [submitted, setSubmitted] = useState(false);
+  const [showClearanceForm, setShowClearanceForm] = useState(false);
 
   const dataset = state.datasets.find((d) => d.id === datasetId);
 
   if (!currentUser || !dataset) {
     return (
-      <Panel title="Dataset not found">
-        <Link className="btn btn-secondary" to="/datasets">
-          Back to datasets
+      <Panel title="Asset not found">
+        <Link className="btn btn-secondary" to="/catalog">
+          Back to asset inventory
         </Link>
       </Panel>
     );
@@ -32,7 +33,7 @@ export function DatasetDetailPage() {
   ) {
     return (
       <Panel title="Restricted">
-        <p className="muted">This dataset belongs to another organization.</p>
+        <p className="muted">This asset belongs to another organization.</p>
       </Panel>
     );
   }
@@ -61,7 +62,7 @@ export function DatasetDetailPage() {
       />
 
       <div className="grid grid-3">
-        <Panel title="Scale">
+        <Panel title="Footprint">
           <div className="stack">
             <div>
               <div className="muted">Rows</div>
@@ -72,12 +73,12 @@ export function DatasetDetailPage() {
               <strong>{dataset.columns}</strong>
             </div>
             <div>
-              <div className="muted">Owner</div>
+              <div className="muted">Steward</div>
               <strong>{owner?.name}</strong>
             </div>
           </div>
         </Panel>
-        <Panel title="Tags">
+        <Panel title="Labels">
           <div className="tag-list">
             {dataset.tags.map((tag) => (
               <span className="tag" key={tag}>
@@ -89,50 +90,61 @@ export function DatasetDetailPage() {
             Updated {formatDate(dataset.updatedAt)}
           </p>
         </Panel>
-        <Panel title="Your access">
+        <Panel title="Clearance status">
           {access ? (
             <div className="stack">
-              <Badge tone="ok">Granted</Badge>
+              <Badge tone="ok">Cleared</Badge>
               <p className="muted">
-                You can explore this dataset from any linked project.
+                You can attach this asset to any linked workstream.
               </p>
-              <Link className="btn" to="/projects">
-                Choose a project
+              <Link className="btn" to="/programs">
+                Open workstreams
               </Link>
             </div>
           ) : (
             <div className="stack">
               <div className="locked-banner">
-                Restricted fields require an approved access request.
+                Restricted fields stay masked until clearance is granted.
               </div>
               {existingPending || submitted ? (
-                <Badge tone="amber">Request pending review</Badge>
+                <Badge tone="amber">Clearance pending</Badge>
               ) : (
-                <form className="form-grid" onSubmit={onRequest}>
-                  <div className="field">
-                    <label htmlFor="access-reason">Business reason</label>
-                    <textarea
-                      id="access-reason"
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <button className="btn" type="submit">
-                    Request dataset access
+                <>
+                  <button
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={() => setShowClearanceForm((v) => !v)}
+                  >
+                    {showClearanceForm ? "Hide clearance form" : "I need clearance"}
                   </button>
-                </form>
+                  {showClearanceForm ? (
+                    <form className="form-grid" onSubmit={onRequest}>
+                      <div className="field">
+                        <label htmlFor="access-reason">Business justification</label>
+                        <textarea
+                          id="access-reason"
+                          value={reason}
+                          onChange={(e) => setReason(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <button className="btn" type="submit">
+                        Submit clearance request
+                      </button>
+                    </form>
+                  ) : null}
+                </>
               )}
             </div>
           )}
         </Panel>
       </div>
 
-      <Panel title="Schema preview" bodyClassName="">
+      <Panel title="Field map" bodyClassName="">
         <table className="table">
           <thead>
             <tr>
-              <th>Column</th>
+              <th>Field</th>
               <th>Type</th>
               <th>Visibility</th>
             </tr>
@@ -146,7 +158,7 @@ export function DatasetDetailPage() {
                 <td className="muted">{col.type}</td>
                 <td>
                   <Badge tone={access ? "ok" : "amber"}>
-                    {access ? "visible" : "masked until approved"}
+                    {access ? "visible" : "masked until cleared"}
                   </Badge>
                 </td>
               </tr>

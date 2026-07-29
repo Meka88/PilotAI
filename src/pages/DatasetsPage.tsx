@@ -15,18 +15,18 @@ export function DatasetsPage() {
   return (
     <>
       <PageHeader
-        title="Data catalog"
-        subtitle="Sensitivity levels decide who can explore immediately versus who must request access."
+        title="Asset inventory"
+        subtitle="Sensitivity decides who explores immediately versus who must request clearance."
       />
 
-      <Panel title={`${datasets.length} datasets`} bodyClassName="">
+      <Panel title={`${datasets.length} assets`} bodyClassName="">
         <table className="table">
           <thead>
             <tr>
-              <th>Dataset</th>
+              <th>Asset</th>
               <th>Sensitivity</th>
               <th>Scale</th>
-              <th>Access</th>
+              <th>Clearance</th>
               <th>Updated</th>
             </tr>
           </thead>
@@ -37,7 +37,7 @@ export function DatasetsPage() {
               return (
                 <tr key={dataset.id}>
                   <td>
-                    <Link to={`/datasets/${dataset.id}`}>
+                    <Link to={`/catalog/${dataset.id}`}>
                       <strong>{dataset.name}</strong>
                     </Link>
                     <div className="muted" style={{ fontSize: "0.8rem" }}>

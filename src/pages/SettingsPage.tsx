@@ -43,16 +43,17 @@ export function SettingsPage() {
           </div>
         </Panel>
 
-        <Panel title="Meticulous demo tips">
+        <Panel title="Meticulous break-demo notes">
           <div className="stack">
             <p>
-              Record flows while switching personas. Good replay candidates:
+              This release intentionally breaks recorded sessions: routes,
+              navigation chrome, login steps, and clearance controls all moved.
             </p>
             <ol className="muted" style={{ margin: 0, paddingLeft: "1.1rem" }}>
-              <li>Explorer requests access to Cohort Ledger</li>
-              <li>Admin approves the request and checks audit</li>
-              <li>Explorer launches an exploration on the unlocked dataset</li>
-              <li>Global Admin adjusts Harbor seat capacity</li>
+              <li>/projects → /programs, /datasets → /catalog, /access → /approvals</li>
+              <li>Sidebar → top navigation</li>
+              <li>Login is now select + confirm</li>
+              <li>Approve/Deny became decision dropdown + Apply</li>
             </ol>
             <p className="muted" style={{ fontSize: "0.85rem" }}>
               Local state key: <code>{STORAGE_KEY}</code>
