@@ -40,11 +40,11 @@ export function AccessPage() {
   return (
     <>
       <PageHeader
-        title="Access workflow"
+        title="Access review queue"
         subtitle={
           canReview
-            ? "Review pending entitlements and leave an auditable decision note."
-            : "Track the status of your dataset access requests."
+            ? "Approve or deny pending entitlements and leave an auditable decision note."
+            : "Track the status of your dataset access requests in one place."
         }
       />
 
@@ -95,14 +95,14 @@ export function AccessPage() {
                       </div>
                       <div className="row">
                         <button className="btn" type="submit">
-                          Approve
+                          Approve request
                         </button>
                         <button
                           className="btn btn-danger"
                           type="button"
                           onClick={(e) => onReview(e, req.id, "denied")}
                         >
-                          Deny
+                          Deny request
                         </button>
                         {dataset ? (
                           <Link className="btn btn-secondary" to={`/datasets/${dataset.id}`}>

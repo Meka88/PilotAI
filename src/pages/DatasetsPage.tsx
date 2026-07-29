@@ -15,8 +15,8 @@ export function DatasetsPage() {
   return (
     <>
       <PageHeader
-        title="Dataset catalog"
-        subtitle="Sensitivity levels drive who can explore immediately vs who must request access."
+        title="Data catalog"
+        subtitle="Sensitivity levels decide who can explore immediately versus who must request access."
       />
 
       <Panel title={`${datasets.length} datasets`} bodyClassName="">

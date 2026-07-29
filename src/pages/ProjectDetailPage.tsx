@@ -175,11 +175,11 @@ export function ProjectDetailPage() {
           </div>
         </Panel>
 
-        <Panel title="Launch exploration">
+        <Panel title="Launch exploration run">
           {accessibleDatasets.length === 0 ? (
             <div className="locked-banner">
               You need dataset access before launching a run. Request access from
-              the Datasets page.
+              the Data Catalog page.
             </div>
           ) : (
             <form className="form-grid" onSubmit={onRun}>
@@ -206,7 +206,7 @@ export function ProjectDetailPage() {
                 </select>
               </div>
               <button className="btn" type="submit">
-                Start run
+                Launch exploration
               </button>
             </form>
           )}

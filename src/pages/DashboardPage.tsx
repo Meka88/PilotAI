@@ -35,37 +35,37 @@ export function DashboardPage() {
   return (
     <>
       <PageHeader
-        title={`Welcome back, ${currentUser.name.split(" ")[0]}`}
+        title={`Good to see you, ${currentUser.name.split(" ")[0]}`}
         subtitle={
           currentUser.role === "global_admin"
-            ? "You are flying the global control plane across all PilotAI tenants."
-            : `Operating inside ${org?.name}. Track programs, access, and explorations.`
+            ? "You are flying the global control plane across every PilotAI tenant."
+            : `Operating inside ${org?.name}. Monitor programs, access, and live explorations.`
         }
         actions={
           <Link className="btn" to="/projects">
-            Open projects
+            Browse programs
           </Link>
         }
       />
 
       <div className="grid grid-4">
         <Stat
-          label="Active projects"
+          label="Live programs"
           value={orgScoped.filter((p) => p.status === "active").length}
           hint={`${orgScoped.length} total in view`}
         />
         <Stat
-          label="Datasets"
+          label="Catalog datasets"
           value={datasets.length}
           hint={`${formatNumber(datasets.reduce((s, d) => s + d.rows, 0))} rows`}
         />
         <Stat
-          label="Pending access"
+          label="Open access items"
           value={pending.length}
           hint={
             currentUser.role === "explorer"
               ? "Your open requests"
-              : "Awaiting review"
+              : "Awaiting reviewer action"
           }
         />
         <Stat
@@ -140,7 +140,7 @@ export function DashboardPage() {
               })
             )}
             <Link className="btn btn-secondary" to="/access">
-              Open access queue
+              Review access queue
             </Link>
           </div>
         </Panel>

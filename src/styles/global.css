@@ -7,10 +7,10 @@
   --line-strong: rgba(143, 178, 210, 0.35);
   --text: #e8f0fa;
   --muted: #8fa3bf;
-  --teal: #2ec4b6;
-  --teal-dim: rgba(46, 196, 182, 0.16);
-  --amber: #f4a261;
-  --amber-dim: rgba(244, 162, 97, 0.16);
+  --teal: #45d0ff;
+  --teal-dim: rgba(69, 208, 255, 0.18);
+  --amber: #ffb347;
+  --amber-dim: rgba(255, 179, 71, 0.18);
   --coral: #e76f51;
   --coral-dim: rgba(231, 111, 81, 0.16);
   --sky: #7eb8da;
@@ -356,11 +356,12 @@ p {
   justify-content: center;
   gap: 0.4rem;
   border: 1px solid transparent;
-  border-radius: 10px;
-  padding: 0.55rem 0.9rem;
-  background: var(--teal);
-  color: #04201c;
-  font-weight: 650;
+  border-radius: 999px;
+  padding: 0.6rem 1.05rem;
+  background: linear-gradient(135deg, var(--teal), #7a9bff);
+  color: #041018;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   transition: transform 140ms ease, filter 140ms ease, background 140ms ease;
 }
 
