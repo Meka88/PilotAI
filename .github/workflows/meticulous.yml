@@ -37,12 +37,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build app
+      - name: Build app for Meticulous replay
         run: npm run build
         env:
           NODE_ENV: production
           CI: false
           METICULOUS_BUILD: "true"
+          # Do NOT set VITE_METICULOUS_RECORD here — recorder must be absent in CI builds.
 
       - name: Skip notice when token is missing
         if: ${{ env.METICULOUS_API_TOKEN == '' }}
@@ -51,12 +52,24 @@ jobs:
           echo "Build succeeded. Add the METICULOUS_API_TOKEN repository secret"
           echo "and install the Meticulous GitHub App to enable visual tests."
 
+      - name: Verify recorder stripped from production build
+        run: |
+          if grep -q "snippet.meticulous.ai" dist/index.html; then
+            echo "::error::Meticulous recorder script is present in dist/. CI builds must strip it."
+            exit 1
+          fi
+          echo "Recorder correctly stripped from dist/index.html"
+          ls -la dist dist/assets
+
       - name: Upload assets and run Meticulous tests
         if: ${{ env.METICULOUS_API_TOKEN != '' }}
         uses: alwaysmeticulous/report-diffs-action/upload-assets@v1
         with:
           api-token: ${{ env.METICULOUS_API_TOKEN }}
           app-directory: dist
+          # Official SPA fallback. Existing files under /assets are served first
+          # by serve-handler; do not use negative-lookahead rules here — they
+          # break path matching and return "Requested path could not be found".
           rewrites: |
             [
               { "source": "/(.*)", "destination": "/index.html" }
