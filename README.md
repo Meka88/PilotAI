@@ -78,8 +78,19 @@ If simulations show a **white screen / 400**, replays never reach real UI → no
 
 Common causes we fixed in this repo:
 1. Recorder script included in the CI production build (can 400 during simulation)
-2. Catch-all SPA rewrite also rewriting `/assets/*.js` (blank app)
+2. Broken SPA rewrite rules on Meticulous hosting → **404 Requested path could not be found**
 3. Recording on `npm run dev` while CI replays a production `dist/` build
+
+Use the official catch-all rewrite only:
+
+```yaml
+rewrites: |
+  [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+```
+
+`serve-handler` still serves real files in `/assets` first; custom negative-lookahead rules can break matching and cause 404s.
 
 ### 1. Recorder snippet
 
