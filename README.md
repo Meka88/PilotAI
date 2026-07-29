@@ -70,9 +70,20 @@ Use **Reset demo** in the top bar anytime to restore seed data.
 
 ## Meticulous setup
 
+### Why tests looked “green” but missed UI changes
+
+A green GitHub **Meticulous** check often means **assets uploaded successfully**, not that meaningful screenshots were compared.
+
+If simulations show a **white screen / 400**, replays never reach real UI → no useful diffs → check stays green.
+
+Common causes we fixed in this repo:
+1. Recorder script included in the CI production build (can 400 during simulation)
+2. Catch-all SPA rewrite also rewriting `/assets/*.js` (blank app)
+3. Recording on `npm run dev` while CI replays a production `dist/` build
+
 ### 1. Recorder snippet
 
-Already installed in `index.html` (must stay the first script):
+The snippet stays in `index.html` for local recording. Vite **strips it from production CI builds**.
 
 ```html
 <script
@@ -81,33 +92,31 @@ Already installed in `index.html` (must stay the first script):
 ></script>
 ```
 
-Replace `YOUR_PROJECT_ID` with the ID from your [Meticulous dashboard](https://app.meticulous.ai).
-
 ### 2. GitHub App + secret
 
-1. Install the [Meticulous GitHub App](https://github.com/apps/alwaysmeticulous/installations/new) on **this** repo (`Meka88/PilotAI`) — required even if you already installed it on another project
-2. Copy your API token from Meticulous → Project Settings
-3. Add GitHub Actions secret: `METICULOUS_API_TOKEN`
+1. Install the [Meticulous GitHub App](https://github.com/apps/alwaysmeticulous/installations/new) on **this** repo (`Meka88/PilotAI`)
+2. Add GitHub Actions secret: `METICULOUS_API_TOKEN`
 
-Until that secret exists, the workflow still **builds the app and passes** — it skips the upload step with a notice instead of failing.
+### 3. Record against the same build CI uses (important)
 
-If you just added `METICULOUS_API_TOKEN`, re-run the **Meticulous** workflow (or push a commit) so CI picks up the secret and runs the upload step.
+```bash
+npm install
+VITE_METICULOUS_RECORD=true npm run build
+VITE_METICULOUS_RECORD=true npm run preview
+```
 
-If CI uploads assets but then fails with **“No repository service configured”**, the GitHub App is missing on this repo — complete step 1 above and re-run.
+Open http://localhost:4173 and record **one workflow per browser tab**:
 
-### 3. CI workflow
+1. Explorer → Assets → Cohort Ledger → I need clearance → Submit
+2. Admin → Clearance desk → Grant clearance → Apply decision
+3. Explorer → Workstreams → launch exploration
+4. Global Admin → Tenants → change seats
 
-`.github/workflows/meticulous.yml` builds the Vite app and uploads `dist/` via:
+In Meticulous → Sessions → open each → **Add to selected sessions**.
 
-`alwaysmeticulous/report-diffs-action/upload-assets@v1`
+### 4. Then open a PR with a real UI change
 
-SPA rewrite is configured so client routes resolve during replay.
-
-### 4. Record base coverage
-
-1. Run `npm run dev` with the real project ID in `index.html`
-2. Walk the persona flows above while the recorder is active
-3. Open a PR with a small UI change — Meticulous replays and comments diffs
+Watch **Test runs** in the Meticulous dashboard (not only the GitHub green check). You want screenshots of real pages, not white screens.
 
 ## Stack
 
@@ -118,6 +127,7 @@ SPA rewrite is configured so client routes resolve during replay.
 
 ## Notes for presenters
 
-- This is a **client-side demo** — perfect for Meticulous static asset upload
-- All mutations write audit events so role switches produce visible state changes
-- Design direction: night flight-deck (ink / teal / amber), not the usual purple SaaS look
+- This is a **client-side demo** — uses Meticulous static asset upload
+- Record on **preview (production build)**, not only Vite dev
+- Green CI ≠ reviewed diffs; always open the Meticulous test run UI
+- Design is currently a light Ops Console (top nav)

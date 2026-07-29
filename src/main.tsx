@@ -5,6 +5,18 @@ import App from "./App";
 import { AppProvider } from "@/lib/store";
 import "@/styles/global.css";
 
+declare global {
+  interface Window {
+    Meticulous?: {
+      isRunningAsTest?: boolean;
+    };
+  }
+}
+
+if (window.Meticulous?.isRunningAsTest) {
+  document.body.classList.add("meticulous-test");
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
