@@ -15,7 +15,7 @@ export function Topbar({ title, subtitle }: { title: string; subtitle: string })
       <div className="topbar-actions">
         <Badge tone="teal">{roleLabels[currentUser.role]}</Badge>
         <button className="btn btn-secondary btn-sm" type="button" onClick={resetDemo}>
-          Reset demo
+          Reset seed data
         </button>
         <button className="btn btn-ghost btn-sm" type="button" onClick={logout}>
           Sign out

@@ -23,27 +23,27 @@ export function LoginPage() {
         <section className="login-brand">
           <div>
             <div className="eyebrow">PilotAI</div>
-            <h1>Mission Control for multi-role AI programs</h1>
+            <h1>Command Deck for multi-role AI programs</h1>
             <p>
-              Switch between Global Admin, Admin, and Explorer to walk the full
-              access-request workflow, project lifecycle, and audit trail —
-              purpose-built for a Meticulous demo.
+              Jump between Global Admin, Admin, and Explorer to exercise access
+              reviews, project lifecycle, and audit trails — tuned for a live
+              Meticulous visual-diff demo.
             </p>
           </div>
           <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
-            <Badge tone="teal">3 roles</Badge>
-            <Badge tone="amber">9+ pages</Badge>
-            <Badge tone="ok">Live workflows</Badge>
+            <Badge tone="teal">3 personas</Badge>
+            <Badge tone="amber">10+ screens</Badge>
+            <Badge tone="ok">Diff-ready flows</Badge>
           </div>
         </section>
 
         <section className="login-panel">
           <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>
-            Enter as a persona
+            Choose a demo persona
           </h2>
           <p className="muted" style={{ marginBottom: "1.1rem" }}>
-            No password — pick a role and explore the same app under different
-            permissions.
+            No password needed — pick a role and compare permissions across the
+            same PilotAI workspace.
           </p>
           <div className="stack">
             {personas.map((user) => {

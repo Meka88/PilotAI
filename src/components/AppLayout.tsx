@@ -7,23 +7,23 @@ import { can } from "@/data/permissions";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   "/": {
-    title: "Mission Control",
+    title: "Command Deck",
     subtitle: "Live picture of programs, access, and exploration health.",
   },
   "/projects": {
-    title: "Projects",
+    title: "Programs",
     subtitle: "Programs running across your organization.",
   },
   "/datasets": {
-    title: "Datasets",
+    title: "Data Catalog",
     subtitle: "Catalog, sensitivity, and access posture.",
   },
   "/analytics": {
-    title: "Analytics",
+    title: "Insights",
     subtitle: "Exploration throughput and insight outcomes.",
   },
   "/access": {
-    title: "Access Requests",
+    title: "Access Queue",
     subtitle: "Approve, deny, and track dataset entitlements.",
   },
   "/users": {

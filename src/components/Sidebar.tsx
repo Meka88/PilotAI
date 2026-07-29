@@ -4,11 +4,11 @@ import { useApp } from "@/lib/store";
 import { Avatar, Badge } from "@/components/ui";
 
 const links = [
-  { to: "/", label: "Mission Control", permission: "view_dashboard" as const },
-  { to: "/projects", label: "Projects", permission: "view_projects" as const },
-  { to: "/datasets", label: "Datasets", permission: "view_datasets" as const },
-  { to: "/analytics", label: "Analytics", permission: "view_analytics" as const },
-  { to: "/access", label: "Access Requests", permission: "request_access" as const },
+  { to: "/", label: "Command Deck", permission: "view_dashboard" as const },
+  { to: "/projects", label: "Programs", permission: "view_projects" as const },
+  { to: "/datasets", label: "Data Catalog", permission: "view_datasets" as const },
+  { to: "/analytics", label: "Insights", permission: "view_analytics" as const },
+  { to: "/access", label: "Access Queue", permission: "request_access" as const },
   { to: "/users", label: "Users & Roles", permission: "view_users" as const },
   { to: "/organizations", label: "Organizations", permission: "view_orgs" as const },
   { to: "/audit", label: "Audit Log", permission: "view_audit" as const },
@@ -33,13 +33,13 @@ export function Sidebar() {
       <div className="brand">
         <div className="brand-mark" aria-hidden>
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M4 17 L12 4 L20 17 Z" stroke="#2EC4B6" strokeWidth="1.8" />
-            <circle cx="12" cy="14.5" r="1.7" fill="#F4A261" />
+            <path d="M4 17 L12 4 L20 17 Z" stroke="#45D0FF" strokeWidth="1.8" />
+            <circle cx="12" cy="14.5" r="1.7" fill="#FFB347" />
           </svg>
         </div>
         <div className="brand-copy">
           <strong>PilotAI</strong>
-          <span>Mission Control</span>
+          <span>Command Deck</span>
         </div>
       </div>
 

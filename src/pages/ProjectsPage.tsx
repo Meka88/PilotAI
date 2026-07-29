@@ -41,19 +41,19 @@ export function ProjectsPage() {
   return (
     <>
       <PageHeader
-        title="Projects"
+        title="Programs"
         subtitle="Create programs, advance status, and attach explorations."
         actions={
           can(currentUser.role, "manage_projects") ? (
             <button className="btn" type="button" onClick={() => setOpen((v) => !v)}>
-              {open ? "Close form" : "New project"}
+              {open ? "Close form" : "New program"}
             </button>
           ) : null
         }
       />
 
       {open ? (
-        <Panel title="Create project">
+        <Panel title="Create program">
           <form className="form-grid" onSubmit={onCreate}>
             <div className="field">
               <label htmlFor="project-name">Name</label>
@@ -83,7 +83,7 @@ export function ProjectsPage() {
               />
             </div>
             <button className="btn" type="submit">
-              Create draft project
+              Create draft program
             </button>
           </form>
         </Panel>

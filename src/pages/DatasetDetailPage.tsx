@@ -119,7 +119,7 @@ export function DatasetDetailPage() {
                     />
                   </div>
                   <button className="btn" type="submit">
-                    Request access
+                    Request dataset access
                   </button>
                 </form>
               )}
