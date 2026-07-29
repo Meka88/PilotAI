@@ -85,11 +85,15 @@ Replace `YOUR_PROJECT_ID` with the ID from your [Meticulous dashboard](https://a
 
 ### 2. GitHub App + secret
 
-1. Install the [Meticulous GitHub App](https://github.com/apps/alwaysmeticulous/installations/new) on this repo
+1. Install the [Meticulous GitHub App](https://github.com/apps/alwaysmeticulous/installations/new) on **this** repo (`Meka88/PilotAI`) — required even if you already installed it on another project
 2. Copy your API token from Meticulous → Project Settings
 3. Add GitHub Actions secret: `METICULOUS_API_TOKEN`
 
 Until that secret exists, the workflow still **builds the app and passes** — it skips the upload step with a notice instead of failing.
+
+If you just added `METICULOUS_API_TOKEN`, re-run the **Meticulous** workflow (or push a commit) so CI picks up the secret and runs the upload step.
+
+If CI uploads assets but then fails with **“No repository service configured”**, the GitHub App is missing on this repo — complete step 1 above and re-run.
 
 ### 3. CI workflow
 
