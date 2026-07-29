@@ -15,10 +15,10 @@ export function Topbar({ title, subtitle }: { title: string; subtitle: string })
       <div className="topbar-actions">
         <Badge tone="teal">{roleLabels[currentUser.role]}</Badge>
         <button className="btn btn-secondary btn-sm" type="button" onClick={resetDemo}>
-          Reset seed data
+          Wipe local state
         </button>
         <button className="btn btn-ghost btn-sm" type="button" onClick={logout}>
-          Sign out
+          Leave console
         </button>
         <div className="user-chip">
           <Avatar name={currentUser.name} hue={currentUser.avatarHue} />

@@ -11,8 +11,8 @@ export function OrganizationsPage() {
   return (
     <>
       <PageHeader
-        title="Tenant organizations"
-        subtitle="Global Admin view of tenants, plans, and seat capacity across PilotAI."
+        title="Tenant map"
+        subtitle="Global Admin console for tenants, plans, and seat pools."
       />
 
       <div className="grid grid-3">

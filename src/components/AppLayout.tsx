@@ -7,39 +7,39 @@ import { can } from "@/data/permissions";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   "/": {
-    title: "Command Deck",
-    subtitle: "Live picture of programs, access, and exploration health.",
+    title: "Ops Console",
+    subtitle: "Priority signals across workstreams, assets, and clearance.",
   },
-  "/projects": {
-    title: "Programs",
-    subtitle: "Programs running across your organization.",
+  "/programs": {
+    title: "Workstreams",
+    subtitle: "Active delivery programs and exploration attach points.",
   },
-  "/datasets": {
-    title: "Data Catalog",
-    subtitle: "Catalog, sensitivity, and access posture.",
+  "/catalog": {
+    title: "Asset inventory",
+    subtitle: "Sensitivity, ownership, and clearance posture.",
   },
-  "/analytics": {
-    title: "Insights",
+  "/insights": {
+    title: "Signal board",
     subtitle: "Exploration throughput and insight outcomes.",
   },
-  "/access": {
-    title: "Access Queue",
-    subtitle: "Approve, deny, and track dataset entitlements.",
+  "/approvals": {
+    title: "Clearance desk",
+    subtitle: "Resolve pending dataset entitlements.",
   },
   "/users": {
-    title: "Users & Roles",
+    title: "People",
     subtitle: "Seat assignments and role boundaries.",
   },
   "/organizations": {
-    title: "Organizations",
+    title: "Tenants",
     subtitle: "Global tenant map and seat pools.",
   },
   "/audit": {
-    title: "Audit Log",
+    title: "Trail",
     subtitle: "Immutable trail of sensitive actions.",
   },
   "/settings": {
-    title: "Settings",
+    title: "Prefs",
     subtitle: "Demo preferences and account context.",
   },
 };
@@ -63,20 +63,20 @@ export function AppLayout() {
   const location = useLocation();
   const meta =
     titles[location.pathname] ??
-    (location.pathname.startsWith("/projects/")
+    (location.pathname.startsWith("/programs/")
       ? {
-          title: "Project Detail",
-          subtitle: "Status, datasets, and exploration runs.",
+          title: "Workstream detail",
+          subtitle: "Status, assets, and exploration runs.",
         }
-      : location.pathname.startsWith("/datasets/")
+      : location.pathname.startsWith("/catalog/")
         ? {
-            title: "Dataset Detail",
-            subtitle: "Schema, access, and explore actions.",
+            title: "Asset detail",
+            subtitle: "Schema, clearance, and explore actions.",
           }
-        : { title: "PilotAI", subtitle: "Mission Control" });
+        : { title: "PilotAI", subtitle: "Ops Console" });
 
   return (
-    <div className="app-shell">
+    <div className="app-shell topnav-shell">
       <Sidebar />
       <div className="main-area">
         <Topbar title={meta.title} subtitle={meta.subtitle} />

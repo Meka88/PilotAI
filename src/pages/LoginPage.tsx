@@ -1,63 +1,61 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { roleDescriptions, roleLabels } from "@/data/permissions";
-import type { Role } from "@/data/types";
+import type { Role, User } from "@/data/types";
 import { useApp } from "@/lib/store";
 import { Avatar, Badge } from "@/components/ui";
 
-const demoOrder: Role[] = ["global_admin", "admin", "explorer"];
+const demoOrder: Role[] = ["explorer", "admin", "global_admin"];
 
 export function LoginPage() {
   const { state, loginAs } = useApp();
   const navigate = useNavigate();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const personas = useMemo(() => {
     return demoOrder
       .map((role) => state.users.find((u) => u.role === role && u.status === "active"))
-      .filter(Boolean);
+      .filter(Boolean) as User[];
   }, [state.users]);
 
+  const selected = personas.find((u) => u.id === selectedId) ?? null;
+
   return (
-    <div className="login-page">
-      <div className="login-stage">
+    <div className="login-page light-login">
+      <div className="login-stage stacked-login">
         <section className="login-brand">
           <div>
-            <div className="eyebrow">PilotAI</div>
-            <h1>Command Deck for multi-role AI programs</h1>
+            <div className="eyebrow">PilotAI Ops</div>
+            <h1>Sign into the Ops Console</h1>
             <p>
-              Jump between Global Admin, Admin, and Explorer to exercise access
-              reviews, project lifecycle, and audit trails — tuned for a live
-              Meticulous visual-diff demo.
+              This release uses a two-step persona gate. Select an operator,
+              then confirm before entering the workspace.
             </p>
           </div>
           <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
-            <Badge tone="teal">3 personas</Badge>
-            <Badge tone="amber">10+ screens</Badge>
-            <Badge tone="ok">Diff-ready flows</Badge>
+            <Badge tone="teal">Breaking demo</Badge>
+            <Badge tone="coral">Routes moved</Badge>
+            <Badge tone="amber">Top navigation</Badge>
           </div>
         </section>
 
         <section className="login-panel">
           <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>
-            Choose a demo persona
+            Step 1 · Select operator
           </h2>
           <p className="muted" style={{ marginBottom: "1.1rem" }}>
-            No password needed — pick a role and compare permissions across the
-            same PilotAI workspace.
+            Order is Explorer → Admin → Global Admin. Confirm in step 2 to enter.
           </p>
           <div className="stack">
             {personas.map((user) => {
-              if (!user) return null;
               const org = state.organizations.find((o) => o.id === user.orgId);
+              const isSelected = selectedId === user.id;
               return (
                 <button
                   key={user.id}
                   type="button"
-                  className="role-card"
-                  onClick={() => {
-                    loginAs(user.id);
-                    navigate("/");
-                  }}
+                  className={`role-card${isSelected ? " selected" : ""}`}
+                  onClick={() => setSelectedId(user.id)}
                 >
                   <div className="row-between">
                     <div className="user-chip">
@@ -69,16 +67,8 @@ export function LoginPage() {
                         </span>
                       </div>
                     </div>
-                    <Badge
-                      tone={
-                        user.role === "global_admin"
-                          ? "coral"
-                          : user.role === "admin"
-                            ? "amber"
-                            : "teal"
-                      }
-                    >
-                      {roleLabels[user.role]}
+                    <Badge tone={isSelected ? "ok" : "muted"}>
+                      {isSelected ? "Selected" : "Select"}
                     </Badge>
                   </div>
                   <span style={{ marginTop: "0.7rem" }}>
@@ -87,6 +77,27 @@ export function LoginPage() {
                 </button>
               );
             })}
+          </div>
+
+          <div className="login-confirm">
+            <h3>Step 2 · Confirm entry</h3>
+            <p className="muted">
+              {selected
+                ? `Continue as ${selected.name} (${roleLabels[selected.role]}).`
+                : "Pick an operator above to unlock the console."}
+            </p>
+            <button
+              className="btn"
+              type="button"
+              disabled={!selected}
+              onClick={() => {
+                if (!selected) return;
+                loginAs(selected.id);
+                navigate("/");
+              }}
+            >
+              Continue to Ops Console
+            </button>
           </div>
         </section>
       </div>

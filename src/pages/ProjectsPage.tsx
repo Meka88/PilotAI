@@ -41,19 +41,19 @@ export function ProjectsPage() {
   return (
     <>
       <PageHeader
-        title="Programs"
-        subtitle="Create programs, advance status, and attach explorations."
+        title="Workstreams"
+        subtitle="Create workstreams, advance status, and attach explorations."
         actions={
           can(currentUser.role, "manage_projects") ? (
             <button className="btn" type="button" onClick={() => setOpen((v) => !v)}>
-              {open ? "Close form" : "New program"}
+              {open ? "Close form" : "New workstream"}
             </button>
           ) : null
         }
       />
 
       {open ? (
-        <Panel title="Create program">
+        <Panel title="Create workstream">
           <form className="form-grid" onSubmit={onCreate}>
             <div className="field">
               <label htmlFor="project-name">Name</label>
@@ -71,7 +71,7 @@ export function ProjectsPage() {
                 id="project-desc"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="What decision will this program unlock?"
+                placeholder="What decision will this workstream unlock?"
               />
             </div>
             <div className="field">
@@ -83,7 +83,7 @@ export function ProjectsPage() {
               />
             </div>
             <button className="btn" type="submit">
-              Create draft program
+              Create draft workstream
             </button>
           </form>
         </Panel>
@@ -113,7 +113,7 @@ export function ProjectsPage() {
                 return (
                   <tr key={project.id}>
                     <td>
-                      <Link to={`/projects/${project.id}`}>
+                      <Link to={`/programs/${project.id}`}>
                         <strong>{project.name}</strong>
                       </Link>
                       <div className="muted" style={{ fontSize: "0.8rem" }}>

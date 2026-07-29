@@ -35,52 +35,75 @@ export function DashboardPage() {
   return (
     <>
       <PageHeader
-        title={`Good to see you, ${currentUser.name.split(" ")[0]}`}
+        title={`${currentUser.name.split(" ")[0]}'s ops board`}
         subtitle={
           currentUser.role === "global_admin"
-            ? "You are flying the global control plane across every PilotAI tenant."
-            : `Operating inside ${org?.name}. Monitor programs, access, and live explorations.`
+            ? "Cross-tenant console. Workstreams, assets, and clearance in one strip."
+            : `${org?.name} workspace · redesigned layout for the Meticulous break demo.`
         }
         actions={
-          <Link className="btn" to="/projects">
-            Browse programs
-          </Link>
+          <div className="row">
+            <Link className="btn" to="/programs">
+              Open workstreams
+            </Link>
+            <Link className="btn btn-secondary" to="/approvals">
+              Clearance desk
+            </Link>
+          </div>
         }
       />
 
-      <div className="grid grid-4">
+      <div className="grid grid-3">
         <Stat
-          label="Live programs"
+          label="Workstreams live"
           value={orgScoped.filter((p) => p.status === "active").length}
-          hint={`${orgScoped.length} total in view`}
+          hint={`${orgScoped.length} total`}
         />
         <Stat
-          label="Catalog datasets"
+          label="Assets in scope"
           value={datasets.length}
           hint={`${formatNumber(datasets.reduce((s, d) => s + d.rows, 0))} rows`}
         />
         <Stat
-          label="Open access items"
+          label="Clearance backlog"
           value={pending.length}
-          hint={
-            currentUser.role === "explorer"
-              ? "Your open requests"
-              : "Awaiting reviewer action"
-          }
-        />
-        <Stat
-          label="Exploration runs"
-          value={runs.length}
-          hint={`${runs.filter((r) => r.status === "running").length} running now`}
+          hint={`${runs.filter((r) => r.status === "running").length} runs in flight`}
         />
       </div>
 
-      <div className="split">
+      <div className="split reverse-split">
+        <Panel title="Clearance hotlist">
+          <div className="stack">
+            {pending.length === 0 ? (
+              <p className="muted">No clearance tickets in your scope.</p>
+            ) : (
+              pending.slice(0, 4).map((req) => {
+                const dataset = state.datasets.find((d) => d.id === req.datasetId);
+                const requester = state.users.find((u) => u.id === req.requesterId);
+                return (
+                  <div key={req.id} className="row-between">
+                    <div>
+                      <strong>{dataset?.name}</strong>
+                      <div className="muted" style={{ fontSize: "0.82rem" }}>
+                        {requester?.name} · {relativeLabel(req.createdAt)}
+                      </div>
+                    </div>
+                    <Badge tone="amber">open</Badge>
+                  </div>
+                );
+              })
+            )}
+            <Link className="btn" to="/approvals">
+              Go to clearance desk
+            </Link>
+          </div>
+        </Panel>
+
         <Panel
-          title="Program pulse"
+          title="Workstream strip"
           action={
-            <Link className="btn btn-secondary btn-sm" to="/projects">
-              View all
+            <Link className="btn btn-secondary btn-sm" to="/programs">
+              All workstreams
             </Link>
           }
           bodyClassName=""
@@ -88,17 +111,17 @@ export function DashboardPage() {
           <table className="table">
             <thead>
               <tr>
-                <th>Project</th>
-                <th>Status</th>
+                <th>Workstream</th>
+                <th>State</th>
                 <th>Progress</th>
-                <th>Updated</th>
+                <th>Touched</th>
               </tr>
             </thead>
             <tbody>
               {orgScoped.slice(0, 5).map((project) => (
                 <tr key={project.id}>
                   <td>
-                    <Link to={`/projects/${project.id}`}>
+                    <Link to={`/programs/${project.id}`}>
                       <strong>{project.name}</strong>
                       <div className="muted" style={{ fontSize: "0.8rem" }}>
                         {project.code}
@@ -116,33 +139,6 @@ export function DashboardPage() {
               ))}
             </tbody>
           </table>
-        </Panel>
-
-        <Panel title="Needs attention">
-          <div className="stack">
-            {pending.length === 0 ? (
-              <p className="muted">No pending access items in your queue.</p>
-            ) : (
-              pending.slice(0, 4).map((req) => {
-                const dataset = state.datasets.find((d) => d.id === req.datasetId);
-                const requester = state.users.find((u) => u.id === req.requesterId);
-                return (
-                  <div key={req.id} className="row-between">
-                    <div>
-                      <strong>{dataset?.name}</strong>
-                      <div className="muted" style={{ fontSize: "0.82rem" }}>
-                        {requester?.name} · {relativeLabel(req.createdAt)}
-                      </div>
-                    </div>
-                    <Badge tone="amber">pending</Badge>
-                  </div>
-                );
-              })
-            )}
-            <Link className="btn btn-secondary" to="/access">
-              Review access queue
-            </Link>
-          </div>
         </Panel>
       </div>
     </>

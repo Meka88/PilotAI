@@ -43,12 +43,12 @@ export default function App() {
       <Route element={<RequireAuth />}>
         <Route element={<AppLayout />}>
           <Route index element={<DashboardPage />} />
-          <Route path="projects" element={<ProjectsPage />} />
-          <Route path="projects/:projectId" element={<ProjectDetailPage />} />
-          <Route path="datasets" element={<DatasetsPage />} />
-          <Route path="datasets/:datasetId" element={<DatasetDetailPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
-          <Route path="access" element={<AccessPage />} />
+          <Route path="programs" element={<ProjectsPage />} />
+          <Route path="programs/:projectId" element={<ProjectDetailPage />} />
+          <Route path="catalog" element={<DatasetsPage />} />
+          <Route path="catalog/:datasetId" element={<DatasetDetailPage />} />
+          <Route path="insights" element={<AnalyticsPage />} />
+          <Route path="approvals" element={<AccessPage />} />
           <Route
             path="users"
             element={

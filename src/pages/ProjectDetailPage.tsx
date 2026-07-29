@@ -33,8 +33,8 @@ export function ProjectDetailPage() {
     return (
       <Panel title="Project not found">
         <p className="muted">This project is missing or outside your scope.</p>
-        <Link className="btn btn-secondary" to="/projects">
-          Back to projects
+        <Link className="btn btn-secondary" to="/programs">
+          Back to workstreams
         </Link>
       </Panel>
     );
@@ -127,7 +127,7 @@ export function ProjectDetailPage() {
         <Panel title="Linked datasets">
           <div className="stack">
             {linkedDatasets.slice(0, 4).map((ds) => (
-              <Link key={ds.id} to={`/datasets/${ds.id}`} className="row-between">
+              <Link key={ds.id} to={`/catalog/${ds.id}`} className="row-between">
                 <span>{ds.name}</span>
                 <Badge tone={hasDatasetAccess(ds.id) ? "ok" : "amber"}>
                   {hasDatasetAccess(ds.id) ? "access" : "locked"}
@@ -178,8 +178,8 @@ export function ProjectDetailPage() {
         <Panel title="Launch exploration run">
           {accessibleDatasets.length === 0 ? (
             <div className="locked-banner">
-              You need dataset access before launching a run. Request access from
-              the Data Catalog page.
+              You need asset clearance before launching a run. Request clearance from
+              the Asset inventory.
             </div>
           ) : (
             <form className="form-grid" onSubmit={onRun}>
@@ -192,7 +192,7 @@ export function ProjectDetailPage() {
                 />
               </div>
               <div className="field">
-                <label htmlFor="run-dataset">Dataset</label>
+                <label htmlFor="run-dataset">Asset</label>
                 <select
                   id="run-dataset"
                   value={datasetId || accessibleDatasets[0]?.id}
@@ -206,7 +206,7 @@ export function ProjectDetailPage() {
                 </select>
               </div>
               <button className="btn" type="submit">
-                Launch exploration
+                Queue exploration job
               </button>
             </form>
           )}

@@ -4,15 +4,15 @@ import { useApp } from "@/lib/store";
 import { Avatar, Badge } from "@/components/ui";
 
 const links = [
-  { to: "/", label: "Command Deck", permission: "view_dashboard" as const },
-  { to: "/projects", label: "Programs", permission: "view_projects" as const },
-  { to: "/datasets", label: "Data Catalog", permission: "view_datasets" as const },
-  { to: "/analytics", label: "Insights", permission: "view_analytics" as const },
-  { to: "/access", label: "Access Queue", permission: "request_access" as const },
-  { to: "/users", label: "Users & Roles", permission: "view_users" as const },
-  { to: "/organizations", label: "Organizations", permission: "view_orgs" as const },
-  { to: "/audit", label: "Audit Log", permission: "view_audit" as const },
-  { to: "/settings", label: "Settings", permission: "manage_settings" as const },
+  { to: "/", label: "Home", permission: "view_dashboard" as const },
+  { to: "/programs", label: "Workstreams", permission: "view_projects" as const },
+  { to: "/catalog", label: "Assets", permission: "view_datasets" as const },
+  { to: "/insights", label: "Signals", permission: "view_analytics" as const },
+  { to: "/approvals", label: "Clearance", permission: "request_access" as const },
+  { to: "/users", label: "People", permission: "view_users" as const },
+  { to: "/organizations", label: "Tenants", permission: "view_orgs" as const },
+  { to: "/audit", label: "Trail", permission: "view_audit" as const },
+  { to: "/settings", label: "Prefs", permission: "manage_settings" as const },
 ];
 
 export function Sidebar() {
@@ -29,22 +29,22 @@ export function Sidebar() {
   const org = state.organizations.find((o) => o.id === currentUser.orgId);
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar topnav">
       <div className="brand">
         <div className="brand-mark" aria-hidden>
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M4 17 L12 4 L20 17 Z" stroke="#45D0FF" strokeWidth="1.8" />
-            <circle cx="12" cy="14.5" r="1.7" fill="#FFB347" />
+            <rect x="3" y="3" width="18" height="18" rx="4" stroke="#0F766E" strokeWidth="1.8" />
+            <path d="M7 15 L12 7 L17 15" stroke="#0F766E" strokeWidth="1.8" />
+            <circle cx="12" cy="13" r="1.5" fill="#BE123C" />
           </svg>
         </div>
         <div className="brand-copy">
           <strong>PilotAI</strong>
-          <span>Command Deck</span>
+          <span>Ops Console</span>
         </div>
       </div>
 
-      <nav className="nav-section" aria-label="Primary">
-        <div className="nav-label">Workspace</div>
+      <nav className="nav-section topnav-links" aria-label="Primary">
         {links.map((link) => {
           if (!can(currentUser.role, link.permission)) return null;
           return (
@@ -55,7 +55,7 @@ export function Sidebar() {
               className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
             >
               {link.label}
-              {link.to === "/access" && pendingCount > 0 ? (
+              {link.to === "/approvals" && pendingCount > 0 ? (
                 <Badge tone="amber">{pendingCount}</Badge>
               ) : null}
             </NavLink>
@@ -63,7 +63,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="sidebar-footer">
+      <div className="sidebar-footer topnav-user">
         <div className="user-chip">
           <Avatar name={currentUser.name} hue={currentUser.avatarHue} />
           <div className="meta">
