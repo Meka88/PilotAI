@@ -26,25 +26,25 @@ export function LoginPage() {
         <section className="login-brand">
           <div>
             <div className="eyebrow">PilotAI Ops</div>
-            <h1>Sign into the Ops Console</h1>
+            <h1>Welcome back to Ops Console</h1>
             <p>
-              This release uses a two-step persona gate. Select an operator,
-              then confirm before entering the workspace.
+              Pick a demo persona, confirm, and jump into clearance + workstream
+              flows. Small copy tweak for a Meticulous smoke test.
             </p>
           </div>
           <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
-            <Badge tone="teal">Breaking demo</Badge>
-            <Badge tone="coral">Routes moved</Badge>
-            <Badge tone="amber">Top navigation</Badge>
+            <Badge tone="teal">Smoke test</Badge>
+            <Badge tone="ok">Sessions ready</Badge>
+            <Badge tone="amber">Login diff</Badge>
           </div>
         </section>
 
         <section className="login-panel">
           <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>
-            Step 1 · Select operator
+            Step 1 · Choose your persona
           </h2>
           <p className="muted" style={{ marginBottom: "1.1rem" }}>
-            Order is Explorer → Admin → Global Admin. Confirm in step 2 to enter.
+            Explorer → Admin → Global Admin. Then confirm below to enter.
           </p>
           <div className="stack">
             {personas.map((user) => {
@@ -80,11 +80,11 @@ export function LoginPage() {
           </div>
 
           <div className="login-confirm">
-            <h3>Step 2 · Confirm entry</h3>
+            <h3>Step 2 · Enter workspace</h3>
             <p className="muted">
               {selected
-                ? `Continue as ${selected.name} (${roleLabels[selected.role]}).`
-                : "Pick an operator above to unlock the console."}
+                ? `Ready to enter as ${selected.name} (${roleLabels[selected.role]}).`
+                : "Select a persona above to unlock entry."}
             </p>
             <button
               className="btn"
@@ -96,7 +96,7 @@ export function LoginPage() {
                 navigate("/");
               }}
             >
-              Continue to Ops Console
+              Enter Ops Console
             </button>
           </div>
         </section>
