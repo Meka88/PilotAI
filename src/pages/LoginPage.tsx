@@ -1,61 +1,63 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { roleDescriptions, roleLabels } from "@/data/permissions";
-import type { Role, User } from "@/data/types";
+import type { Role } from "@/data/types";
 import { useApp } from "@/lib/store";
 import { Avatar, Badge } from "@/components/ui";
 
-const demoOrder: Role[] = ["explorer", "admin", "global_admin"];
+const demoOrder: Role[] = ["global_admin", "admin", "explorer"];
 
 export function LoginPage() {
   const { state, loginAs } = useApp();
   const navigate = useNavigate();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const personas = useMemo(() => {
     return demoOrder
       .map((role) => state.users.find((u) => u.role === role && u.status === "active"))
-      .filter(Boolean) as User[];
+      .filter(Boolean);
   }, [state.users]);
 
-  const selected = personas.find((u) => u.id === selectedId) ?? null;
-
   return (
-    <div className="login-page light-login">
-      <div className="login-stage stacked-login">
+    <div className="login-page">
+      <div className="login-stage">
         <section className="login-brand">
           <div>
-            <div className="eyebrow">PilotAI Ops</div>
-            <h1>Welcome back to Ops Console</h1>
+            <div className="eyebrow">PilotAI</div>
+            <h1>Mission Control for multi-role AI programs</h1>
             <p>
-              Pick a demo persona, confirm, and jump into clearance + workstream
-              flows. Small copy tweak for a Meticulous smoke test.
+              Switch between Global Admin, Admin, and Explorer to walk the full
+              access-request workflow, project lifecycle, and audit trail —
+              purpose-built for a Meticulous demo.
             </p>
           </div>
           <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
-            <Badge tone="teal">Smoke test</Badge>
-            <Badge tone="ok">Sessions ready</Badge>
-            <Badge tone="amber">Login diff</Badge>
+            <Badge tone="teal">3 roles</Badge>
+            <Badge tone="amber">9+ pages</Badge>
+            <Badge tone="ok">Live workflows</Badge>
           </div>
         </section>
 
         <section className="login-panel">
           <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>
-            Step 1 · Choose your persona
+            Enter as a persona
           </h2>
           <p className="muted" style={{ marginBottom: "1.1rem" }}>
-            Explorer → Admin → Global Admin. Then confirm below to enter.
+            No password — pick a role and explore the same app under different
+            permissions.
           </p>
           <div className="stack">
             {personas.map((user) => {
+              if (!user) return null;
               const org = state.organizations.find((o) => o.id === user.orgId);
-              const isSelected = selectedId === user.id;
               return (
                 <button
                   key={user.id}
                   type="button"
-                  className={`role-card${isSelected ? " selected" : ""}`}
-                  onClick={() => setSelectedId(user.id)}
+                  className="role-card"
+                  onClick={() => {
+                    loginAs(user.id);
+                    navigate("/");
+                  }}
                 >
                   <div className="row-between">
                     <div className="user-chip">
@@ -67,8 +69,16 @@ export function LoginPage() {
                         </span>
                       </div>
                     </div>
-                    <Badge tone={isSelected ? "ok" : "muted"}>
-                      {isSelected ? "Selected" : "Select"}
+                    <Badge
+                      tone={
+                        user.role === "global_admin"
+                          ? "coral"
+                          : user.role === "admin"
+                            ? "amber"
+                            : "teal"
+                      }
+                    >
+                      {roleLabels[user.role]}
                     </Badge>
                   </div>
                   <span style={{ marginTop: "0.7rem" }}>
@@ -77,27 +87,6 @@ export function LoginPage() {
                 </button>
               );
             })}
-          </div>
-
-          <div className="login-confirm">
-            <h3>Step 2 · Enter workspace</h3>
-            <p className="muted">
-              {selected
-                ? `Ready to enter as ${selected.name} (${roleLabels[selected.role]}).`
-                : "Select a persona above to unlock entry."}
-            </p>
-            <button
-              className="btn"
-              type="button"
-              disabled={!selected}
-              onClick={() => {
-                if (!selected) return;
-                loginAs(selected.id);
-                navigate("/");
-              }}
-            >
-              Enter Ops Console
-            </button>
           </div>
         </section>
       </div>
