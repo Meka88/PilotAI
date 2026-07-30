@@ -67,10 +67,10 @@ jobs:
         with:
           api-token: ${{ env.METICULOUS_API_TOKEN }}
           app-directory: dist
-          # Official SPA fallback. Existing files under /assets are served first
-          # by serve-handler; do not use negative-lookahead rules here — they
-          # break path matching and return "Requested path could not be found".
+          # serve-handler uses minimatch globs, NOT regex.
+          # "/(.*)" returns 404 "The requested path could not be found".
+          # "**" is the correct SPA fallback; real files like /assets/* still win.
           rewrites: |
             [
-              { "source": "/(.*)", "destination": "/index.html" }
+              { "source": "**", "destination": "/index.html" }
             ]
