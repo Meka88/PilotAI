@@ -81,16 +81,18 @@ Common causes we fixed in this repo:
 2. Broken SPA rewrite rules on Meticulous hosting → **404 Requested path could not be found**
 3. Recording on `npm run dev` while CI replays a production `dist/` build
 
-Use the official catch-all rewrite only:
+Use this SPA rewrite (minimatch glob — not regex):
 
 ```yaml
 rewrites: |
   [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "**", "destination": "/index.html" }
   ]
 ```
 
-`serve-handler` still serves real files in `/assets` first; custom negative-lookahead rules can break matching and cause 404s.
+Important: `/(.*)` looks right but **does not work** with Meticulous/`serve-handler`.
+It produces exactly: **404 The requested path could not be found** (white page).
+`**` falls back client routes to `index.html` while real `/assets/*` files still win.
 
 ### 1. Recorder snippet
 
